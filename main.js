@@ -52,10 +52,29 @@ let timer = {
 
 /* DOM objects */
 
-let timerElement = document.getElementsByClassName("timer-current")[0];
+let timerElement = document.getElementsByClassName("timer-current")[0],
+    startAppButton = document.getElementById("start-timer");
 
-/* DOM functions */
+/* DOM view functions */
+
+function renderInitialRemainingTime () {
+  timerElement.textContent = timer.timeLimitSeconds;
+}
 
 function renderRemainingTime (timeLimit) {
   timerElement.textContent = timeLimit;
 }
+
+/* DOM events functions */
+
+function activateTimeCounter () {
+  timer.countRemainingTime();
+}
+
+/* Application init */
+
+function init () {
+  renderInitialRemainingTime();
+  startAppButton.addEventListener('click', activateTimeCounter);
+}
+init();
