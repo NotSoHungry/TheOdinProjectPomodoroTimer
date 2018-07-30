@@ -1,0 +1,12 @@
+.app {
+    background: #EAEAEA;
+    width: 100%;
+    max-width: 1100px;
+    height: 550px;
+    border: solid 1px red;
+    margin: 0 auto;
+    padding: 10px 15px;
+}
+
+
+
