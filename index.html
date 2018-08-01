@@ -11,25 +11,35 @@
 </head>
 <body>
     <section class="app">
-        <header class="app-header"></header>
-        <main class="app-main">
-            <div class="main-mode">
-                <button class="mode-button left"></button>
-                <div class="mode-current"></div>
-                <button class="mode-button right"></button>
-            </div>
-            <div class="main-timer">
-                <time class="timer-current"></time>
-                <div class="timer-progress"></div>
-            </div>
-            <div class="main-controls">
-                <button class="control play"></button>
-                <button class="control pause"></button>
-                <button class="control restart"></button>
-                <button class="control stop"></button>
-            </div>
-            <button class="control start" id="start-timer">Start timer</button>
-        </main>
+        <h1>Pomodoro Timer</h1>
+        <div class="app-wrapper">
+            <navigation class="app-navigation row">
+                <a class="navigation-item settings">
+                    <div class="settings-fill"></div>
+                </a>
+                <a class="navigation-item statistics">
+
+                </a>
+            </navigation>
+            <main class="app-main">
+                <div class="main-mode">
+                    <button class="mode-button left"></button>
+                    <div class="mode-current"></div>
+                    <button class="mode-button right"></button>
+                </div>
+                <div class="main-timer">
+                    <time class="timer-current"></time>
+                    <div class="timer-progress"></div>
+                </div>
+                <div class="main-controls">
+                    <button class="control play"></button>
+                    <button class="control pause"></button>
+                    <button class="control restart"></button>
+                    <button class="control stop"></button>
+                </div>
+                <button class="control start" id="start-timer">Start timer</button>
+            </main>
+        </div>
     </section>
 <script src="main.js"></script>    
 </body>
