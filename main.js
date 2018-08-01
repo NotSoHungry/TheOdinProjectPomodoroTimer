@@ -28,11 +28,153 @@ VER 2:
 
 */
 
-/* Application data */
+// TIMER CONTROLLER
 
+const TimerCtrl = (function () {
+  // Private data and functions
+
+  // Timer object
+  const _timer = {
+    timeLimitSeconds: 128
+  };
+
+  //Application state
+  let _currentTimeLimitSeconds = 128;
+
+  // Public functions
+  const decrementTimeLeft = (function () {
+    let timeLeft;
+
+    return function (timeLeftInput) {
+      timeLeft = timeLeftInput;
+      timeLeft -= 1; 
+      return timeLeft;
+    }
+  })();
+  const getCurrentTimeLimitSeconds = function () {
+    return _currentTimeLimitSeconds;
+  }
+
+  return {
+    decrementTimeLeft: decrementTimeLeft,
+    getCurrentTimeLimitSeconds: getCurrentTimeLimitSeconds
+  }
+})();
+
+
+// UI CONTROLLER
+
+const UICtrl = (function () {
+  // Private data and functions
+
+  // UI Selectors
+  const UISelectors = {
+    timer: ".timer-current",
+    startAppButton: "#start-timer"
+  };
+
+  const _convertTimeLeft = function (timeLeft) {
+    let timeLeftMinutes = Math.floor(timeLeft / 60).toString(),
+          timeLeftSeconds = Number(((timeLeft / 60) - Math.floor(timeLeft / 60)) * 60).toFixed(0).toString();
+    (timeLeftMinutes.length === 1) ? timeLeftMinutes = ("0" + timeLeftMinutes) : '';
+    (timeLeftSeconds.length === 1) ? timeLeftSeconds = ("0" + timeLeftSeconds) : '';
+
+    return `${timeLeftMinutes} : ${timeLeftSeconds}`;
+  };
+
+  //Public functions
+  const showTimeLeft = function (timeLeftInput) {
+    const timeLeft = _convertTimeLeft(timeLeftInput);
+
+    document.querySelector(UISelectors.timer).textContent = timeLeft;
+  }
+  const getUISelectors = function () {
+    return UISelectors;
+  }
+
+  return {
+    showTimeLeft: showTimeLeft,
+    getUISelectors: getUISelectors
+  }
+
+})();
+
+
+// APPLICATION CONTROLLER
+
+const AppCtrl = (function (TimerCtrl, UICtrl) {
+  //Private data and functions
+
+  //Get UI Selectors
+  const UISelectors = UICtrl.getUISelectors();
+
+  const _countTimeLeft = function (timeLimit) {
+    timeLimit = (timeLimit === undefined) ? TimerCtrl.getCurrentTimeLimitSeconds() : timeLimit;
+    if (timeLimit > 0) {
+      window.setTimeout(function () {
+        timeLimit = TimerCtrl.decrementTimeLeft(timeLimit);
+        //Update UI
+        UICtrl.showTimeLeft(timeLimit);
+        //Loop until "0"
+        _countTimeLeft(timeLimit);
+        }, 1000)
+    }
+  };
+
+  const _activateCounter = function (e) {
+    _countTimeLeft();
+    e.preventDefault();
+  };
+
+  const _setEventListeners = function () {
+    //Start timer
+    document.querySelector(UISelectors.startAppButton).addEventListener('click', _activateCounter);
+  }
+
+  // Public functions
+  const init = function () {
+    UICtrl.showTimeLeft(TimerCtrl.getCurrentTimeLimitSeconds());
+    _setEventListeners();
+  }
+
+  return {
+    init: init
+  }
+
+})(TimerCtrl, UICtrl)
+
+AppCtrl.init();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 let timer = {
   timeLimitSeconds: 50,
-  countRemainingTime: function (timeLimit) {
+  dec: function (timeLimit) {
     timeLimit = (timeLimit === undefined) ? this.timeLimitSeconds : timeLimit;
     if (timeLimit > 0) {
       let self = this;
@@ -49,32 +191,4 @@ let timer = {
   },
   
 }
-
-/* DOM objects */
-
-let timerElement = document.getElementsByClassName("timer-current")[0],
-    startAppButton = document.getElementById("start-timer");
-
-/* DOM view functions */
-
-function renderInitialRemainingTime () {
-  timerElement.textContent = timer.timeLimitSeconds;
-}
-
-function renderRemainingTime (timeLimit) {
-  timerElement.textContent = timeLimit;
-}
-
-/* DOM events functions */
-
-function activateTimeCounter () {
-  timer.countRemainingTime();
-}
-
-/* Application init */
-
-function init () {
-  renderInitialRemainingTime();
-  startAppButton.addEventListener('click', activateTimeCounter);
-}
-init();
+*/
