@@ -24,6 +24,15 @@ VER 2:
 2. User needs to be able to control time limit value
  a) it should be possible at application start
   - it should have an HTML element that will pop up at the start up
+ b) it should be possible when the application is already running
+  - there should be an HTML element that will show the settings page when clicked
+  - there should be an onclick event attached to the element
+ c) it should be possible to change the time limit value through a slider
+  - there should be an HTML slider element
+  - time limit value should be decreased/increased when user will be moving the slider's position
+
+3. User should be able to control the left time with the progress bar under the displayed time
+ a) 
 
 
 */
@@ -75,7 +84,7 @@ const UICtrl = (function () {
 
   const _convertTimeLeft = function (timeLeft) {
     let timeLeftMinutes = Math.floor(timeLeft / 60).toString(),
-          timeLeftSeconds = Number(((timeLeft / 60) - Math.floor(timeLeft / 60)) * 60).toFixed(0).toString();
+        timeLeftSeconds = Number(((timeLeft / 60) - Math.floor(timeLeft / 60)) * 60).toFixed(0).toString();
     (timeLeftMinutes.length === 1) ? timeLeftMinutes = ("0" + timeLeftMinutes) : '';
     (timeLeftSeconds.length === 1) ? timeLeftSeconds = ("0" + timeLeftSeconds) : '';
 
@@ -120,12 +129,14 @@ const AppCtrl = (function (TimerCtrl, UICtrl) {
         }, 1000)
     }
   };
-
+  
+  //DOM Events handler functions
   const _activateCounter = function (e) {
     _countTimeLeft();
     e.preventDefault();
   };
 
+  //Set Event Listeners for DOM objects
   const _setEventListeners = function () {
     //Start timer
     document.querySelector(UISelectors.startAppButton).addEventListener('click', _activateCounter);
