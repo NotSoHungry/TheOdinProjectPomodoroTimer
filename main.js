@@ -47,6 +47,9 @@ const TimerCtrl = (function () {
     timeLimitSeconds: 128
   };
 
+  let testSingletonObj = {
+    test: 0
+  }
   //Application state
   let _currentTimeLimitSeconds = 128;
 
@@ -63,10 +66,14 @@ const TimerCtrl = (function () {
   const getCurrentTimeLimitSeconds = function () {
     return _currentTimeLimitSeconds;
   }
+  const getSingleton = function () {
+    return testSingletonObj;
+  }
 
   return {
     decrementTimeLeft: decrementTimeLeft,
-    getCurrentTimeLimitSeconds: getCurrentTimeLimitSeconds
+    getCurrentTimeLimitSeconds: getCurrentTimeLimitSeconds,
+    getSingleton: getSingleton
   }
 })();
 
@@ -148,17 +155,18 @@ const AppCtrl = (function (TimerCtrl, UICtrl) {
     _setEventListeners();
   }
 
+  const getSingleton = function () {
+   return TimerCtrl.getSingleton();
+  }
+
   return {
-    init: init
+    init: init,
+    getSingleton: getSingleton
   }
 
 })(TimerCtrl, UICtrl)
 
 AppCtrl.init();
-
-
-
-
 
 
 
